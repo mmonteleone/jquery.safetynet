@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>jQuery SafetyNet Example</title>
+<script src="../lib/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../lib/jquery.netchanger.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../jquery.safetynet.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+function log(message) {
+    $('log').html($('log').html() + message + "\n");
+}        
+
+$(document).ready(function(){
+    $.safetynet();
+});
+
+</script>
+
+</head>
+<body>
+
+<h1>jQuery.safetynet</h1>
+<h2>Example</h2>
+
+<form action="" method="GET">
+    <div>
+        <input type="text" name="some-input" value="initial input value" />
+    </div>
+    <div>
+        <textarea name="some-textarea">some initial textarea value</textarea>
+    </div>
+    <div>
+        <select name="some-select">
+            <option value="a">a</option>
+            <option value="b" selected="selected">b</option>
+            <option value="c">c</option>
+            <option value="d">d</option>
+        </select>
+    </div>
+    <input type="submit" value="Submit" />  
+	<a href="http://www.google.com">An out-bound link</a>
+</form>
+
+<h2>Steps to demonstrate behavior</h2>
+<ol>
+    <li>Try clicking on link or refreshing, no warning should occur</li>
+    <li>Try modifing an input and select and navigating away.  A warning should occur</li>
+    <li>Change select back to its original value, "b", and try navigating away.  A warning should still occur</li>
+    <li>Change all inputs back to their original values and try navigating away.  No warning should occur.</li>
+    <li>Try changing values from their original values and clicking "Submit".  No warning should occur</li>
+</ol>
+
+<pre id="log" />
+
+</body>
+</html>
