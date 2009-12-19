@@ -8,12 +8,12 @@ What?
 
 Web browsers provide an `onbeforeunload` "event" for allowing prompting of a user before she navigates away from a page.  By default, this event is somewhat inflexible, and has no intelligence of its own.
 
-jQuery.safetynet is a simple [jQuery](3) plugin that monitors a form for changes and provides a save warning when navigating away in an intelligent manner.
+jQuery.safetynet is a simple [jQuery][3] plugin that monitors a form for changes and provides a save warning when navigating away in an intelligent manner.
 
 ### Features:
 
-* Monitors the form for *true* changes, not just `onchange` events.  i.e. typing in an input that results in the input having a truly  different value on the input's `onblur`. (thanks to [jQuery.netchanger](9))
-* Smart enough to track when a previously truly changed field is later reverted back to its original state, and to not warn if all inputs are reverted back to their original states.  So if a user changes some fields, tries to leave, is warned about the unsaved changes and cancels leaving, changes modifed fields back to their original values, and again tries to leave, she will not be warned.  jQuery.safetynet tracks changes on an input-by-input level.  (thanks again to  [jQuery.netchanger](9))
+* Monitors the form for *true* changes, not just `onchange` events.  i.e. typing in an input that results in the input having a truly  different value on the input's `onblur`. (thanks to [jQuery.netchanger][9])
+* Smart enough to track when a previously truly changed field is later reverted back to its original state, and to not warn if all inputs are reverted back to their original states.  So if a user changes some fields, tries to leave, is warned about the unsaved changes and cancels leaving, changes modifed fields back to their original values, and again tries to leave, she will not be warned.  jQuery.safetynet tracks changes on an input-by-input level.  (thanks again to  [jQuery.netchanger][9])
 * Can distinguish between a normal attempted navigation away from the page and a navigation away due to a requested form submission, since it should not warn in the latter case.
 * Exposes a simple API for other code to: 
   * Manually raise and cancel field-scoped changes on jQuery.safetynet.  This is useful for custom widgets like drag-and-drop, etc.
@@ -25,7 +25,7 @@ Given the setup...
 
     $('input,select,textarea').safetynet({message: "You didn't save your work yet!"});
    
-jQuery.safetynet will monitor inputs, selects, and textareas for actual content changes, and if one occurs, will warn the user upon leaving that she has unsaved changes.  And because jQuery.safetynet uses the [jQuery.netchanger](9) plugin behind the scenes, it's smart enough to know to only consider true content changes from their original values, and also to consider when inputs are reverted back to their original state, and not to warn.
+jQuery.safetynet will monitor inputs, selects, and textareas for actual content changes, and if one occurs, will warn the user upon leaving that she has unsaved changes.  And because jQuery.safetynet uses the [jQuery.netchanger][9] plugin behind the scenes, it's smart enough to know to only consider true content changes from their original values, and also to consider when inputs are reverted back to their original state, and not to warn.
 
 As a shortcut, the above could have been setup using its default message and input selectors:
 
@@ -37,14 +37,14 @@ Requirements, installation, and notes
 
 jQuery.safetynet requires:
 
-* [jQuery](3) 1.3.2 or greater
-* [jQuery.netchanger](9) 0.9 or greater plugin
+* [jQuery][3] 1.3.2 or greater
+* [jQuery.netchanger][9] 0.9 or greater plugin
 
 Both are included with jQuery.safetynet.
 
 You can download the [zipped release][8] containing a minified build with examples and documentation or the development master with unit tests by cloning `git://github.com/mmonteleone/jquery.safetynet.git`.
 
-jQuery.safetynet requires [jquery][3] 1.3.2, and [jQuery.netchanger](9) 0.9 and can be installed thusly 
+jQuery.safetynet requires [jquery][3] 1.3.2, and [jQuery.netchanger][9] 0.9 and can be installed thusly 
 
     <script type="text/javascript" src="jquery-1.3.2.min.js"></script>
     <script type="text/javascript" src="jquery.netchanger.min.js"></script>
