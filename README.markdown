@@ -3,6 +3,8 @@ jQuery.safetynet
 A smarter in-browser "unsaved changes" warning  
 [http://github.com/mmonteleone/jquery.safetynet][0]  
 
+**Support for jQuery 1.4's now usable live() event coming soon**
+
 What?
 -----
 
@@ -12,7 +14,7 @@ jQuery.safetynet is a simple [jQuery][3] plugin that monitors a form for changes
 
 ### Features:
 
-* Monitors the form for *true* changes, not just `onchange` events.  i.e. typing in an input that results in the input having a truly  different value on the input's `onblur`. (thanks to [jQuery.netchanger][9])
+* Monitors the form for *true* changes, not just `onchange` events.  i.e. typing in an input that results in the input having a truly  different value on the input's `onblur` relative to when the page loaded or safetynet was last refreshed. (thanks to [jQuery.netchanger][9])
 * Smart enough to track when a previously truly changed field is later reverted back to its original state, and to not warn if all inputs are reverted back to their original states.  So if a user changes some fields, tries to leave, is warned about the unsaved changes and cancels leaving, changes modifed fields back to their original values, and again tries to leave, she will not be warned.  jQuery.safetynet tracks changes on an input-by-input level.  (thanks again to  [jQuery.netchanger][9])
 * Can distinguish between a normal attempted navigation away from the page and a navigation away due to a requested form submission, since it should not warn in the latter case.
 * Exposes a simple API for other code to: 
