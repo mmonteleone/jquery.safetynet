@@ -16,7 +16,9 @@
         suppressed = false,     // whether or not warning should be suppressed
         uniqueIdentifiers = 0,  // accumulator for providing page-unique ids for anonymous elements
         activated = false,      // whether or not the plugin has already been activated for a given page
-        idDataKey = 'safetynet-identifier';  // key to use internally for storing ids on .data()
+        idDataKey = 'safetynet-identifier',  // key to use internally for storing ids on .data()
+        selection,
+        events;
 
     /**
      * Helper which returns a unique identifier for a given input
@@ -25,27 +27,27 @@
      * @param {jQuery} selection selection of an input
      * @returns {string} key
      */
-    var fieldIdentifierFor = function(selection) {
-        selection = $(selection);
+    var fieldIdentifierFor = function(sel) {
+        sel = $(sel);
 
         // if field has a name, use that
-        var name = selection.attr('name');
+        var name = sel.attr('name');
         if(name !== undefined && !isNullOrEmpty(name)) {
             return name;
         }
 
         // otherwise, if has an id, use that
-        var id = selection.attr('id');
+        var id = sel.attr('id');
         if(id !== undefined && !isNullOrEmpty(id)) {
             return name;
         }
 
         // finally, if neither, just make up a new unique
         // key for it and store it for later
-        var uid = selection.data(idDataKey);
+        var uid = sel.data(idDataKey);
         if(uid === undefined) {
             uid = uniqueIdentifiers++;
-            selection.data(idDataKey, uid);
+            sel.data(idDataKey, uid);
         }
         return uid;
     };    
@@ -92,7 +94,8 @@
     $.fn.safetynet = function(options){
         var settings = $.extend({}, $.safetynet.defaults, options || {});
         
-        var selection = this;
+        selection = this;
+        events = settings.netChangerEvents;
         
         if(activated) {
             throw('Only one activation of jQuery.safetynet is allowed per page');
@@ -105,15 +108,16 @@
         }
         
         // set up selected inputs to raise netchanger events
-        this.netchanger({events: settings.netChangerEvents})
-            // register an input's change on 'netchange'
-            .bind('netchange', function(){
+        this.netchanger({events: events})
+            // register an input's change on 'netchange'                    
+            .live('netchange', function(){
                 $.safetynet.raiseChange(fieldIdentifierFor(this));
                 })
             // clear an input's change on 'revertchange's
-            .bind('revertchange', function(){
+            .live('revertchange', function(){
                 $.safetynet.clearChange(fieldIdentifierFor(this));
-                });
+                });        
+        
         
         // hook onto the onbeforeunload
         // this is a strange pseudo-event that can't be jQuery.fn.bind()'ed to
@@ -143,6 +147,10 @@
     };
 
     $.extend($.safetynet,{
+        reBind: function() {
+            // set up selected inputs to raise netchanger events
+            selection.netchanger({events: events});            
+        },
         /**
          * Manually registers a change with Safetynet, so that a warning is 
          * prompted when the user navigates away.  This can be useful for custom 
@@ -195,6 +203,7 @@
         },
         version: '0.9.0',
         defaults: {
+            live: true,
             // The message to show the user when navigating away from a non-submitted form
             message: 'Your unsaved changes will be lost.',
             // Selector of default fields to monitor when using the `$.safetynet()` shortcut alias
