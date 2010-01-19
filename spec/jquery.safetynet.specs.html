@@ -1,13 +1,23 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    
+<!-- load up 1.3 instance of jq and netchanger -->
 <script type="text/javascript" src="../lib/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="../lib/jquery.netchanger.min.js"></script>
+<script type="text/javascript" src="../jquery.safetynet.js"></script>
+<script type="text/javascript"> jq_1_3_2 = jQuery.noConflict(true); </script>
+
+<!-- load up 1.4 instance of jq and netchanger -->
+<script type="text/javascript" src="../lib/jquery-1.4.min.js"></script>
+<script type="text/javascript" src="../lib/jquery.netchanger.min.js"></script>
+<script type="text/javascript" src="../jquery.safetynet.js"></script>
+<script type="text/javascript"> jq_1_4 = jQuery.noConflict(true); </script>    
+    
 <script type="text/javascript" src="lib/qunit/qunit.js"></script>
 <link rel="stylesheet" href="lib/qunit/qunit.css" type="text/css" media="screen" />
 <script type="text/javascript" src="lib/pavlov/pavlov.min.js"></script>
 
-<script type="text/javascript" src="../jquery.safetynet.js"></script>
 <script type="text/javascript" src="jquery.safetynet.specs.js"></script>
 <style type="text/css">
 #testbed {

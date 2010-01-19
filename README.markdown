@@ -20,6 +20,7 @@ jQuery.safetynet is a simple [jQuery][3] plugin that monitors a form for changes
 * Exposes a simple API for other code to: 
   * Manually raise and cancel field-scoped changes on jQuery.safetynet.  This is useful for custom widgets like drag-and-drop, etc.
   * Manually suppress save warnings if necessary
+* Compatible with jQuery 1.3 and 1.4.  When used with 1.4 monitors document internally via `live` instead of `bind` to automatically account for DOM changes after page load.  This is configurable.
 
 ### Basic Example
 
@@ -40,19 +41,26 @@ Requirements, installation, and notes
 jQuery.safetynet requires:
 
 * [jQuery][3] 1.3.2 or greater
-* [jQuery.netchanger][9] 0.9 or greater plugin
+* [jQuery.netchanger][9] 0.9.1 or greater plugin
 
 Both are included with jQuery.safetynet.
 
 You can download the [zipped release][8] containing a minified build with examples and documentation or the development master with unit tests by cloning `git://github.com/mmonteleone/jquery.safetynet.git`.
 
-jQuery.safetynet requires [jquery][3] 1.3.2, and [jQuery.netchanger][9] 0.9 and can be installed thusly 
+jQuery.safetynet requires [jquery][3] 1.3.2, and [jQuery.netchanger][9] 0.9.1 and can be installed thusly 
 
-    <script type="text/javascript" src="jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.min.js"></script>
     <script type="text/javascript" src="jquery.netchanger.min.js"></script>
     <script type="text/javascript" src="jquery.safetynet.min.js"></script>
 
 jQuery.safetynet includes a full unit test suite, and has been verified to work against Firefox 3.5, Safari 4, Internet Explorer 6,7,8, Chrome, and Opera 9 and 10.  Please feel free to test its suite against other browsers.
+
+jQuery 1.4 Bonus
+----------------
+
+Safetynet works great with jQuery 1.3, but it's even better with 1.4.  When used with jQuery 1.4, jQuery.safetynet automatically assumes monitoring the document and its fields via netchanger with `.live()` instead of `.bind()`, allowing for any newly added DOM elements to also be protected by safetynet.
+
+This behavior can be overridden by specifying the 'live' option, and is only allowed with jQuery 1.4.
 
 Complete API
 ------------
@@ -83,6 +91,8 @@ Only one activation of jQuery.safetynet is allowed per page.  Subsequent attempt
   * *default*: `'form'`
 * **netChangerEvents**: events on which to check for changes to the control, and raise the netchanger events.  This shouldn't usually need to be changed.
   * *default*: `'change,keyup,paste'`
+* **live**: whether to monitor document and fields via `live` instead of `bind`, allowing for newly added DOM content to also be protected by safetynet automatically.
+  * *default*: `true` when using jQuery 1.4 or greater.  `false` otherwise.  Passing `true` without jQuery 1.4 or greater throws an exception.
 
 ### Functions
 
@@ -132,6 +142,7 @@ The following build tasks are available:
 Changelog
 ---------
 
+* 0.9.1 - Added support for new 'live' option in conjunction with new jQuery 1.4 support
 * 0.9.0 - Initial Release
 
 License
