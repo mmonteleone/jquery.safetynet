@@ -3,8 +3,6 @@ jQuery.safetynet
 A smarter in-browser "unsaved changes" warning  
 [http://github.com/mmonteleone/jquery.safetynet][0]  
 
-**Support for jQuery 1.4's now usable live() event coming soon**
-
 What?
 -----
 
