@@ -2,7 +2,7 @@
  * jQuery.safetynet
  * A smarter in-browser "unsaved changes" warning
  *
- * version 0.9.1
+ * version 0.9.2
  *
  * http://michaelmonteleone.net/projects/safetynet
  * http://github.com/mmonteleone/jquery.safetynet
@@ -161,25 +161,39 @@
          * prompted when the user navigates away.  This can be useful for custom
          * widgets like drag-and-drop to register their changed states.
          * @param {String} key a key is required since changes are tracked per-control
-         *  in order to be able to cancel changes per-control.
+         *  in order to be able to cancel changes per-control. Key can be literal 
+         *  string to associate change with, or a jQuery object to traverse and associate
+         *  changes with each matched element
          */
         raiseChange: function(key) {
             if(key === undefined || isNullOrEmpty(key)) {
                 throw("key is required when raising a jQuery.safetynet change");
+            } else if(key instanceof $) {
+                key.each(function(){
+                    changeFlags[fieldIdentifierFor($(this))] = true;
+                });
+            } else {
+                changeFlags[key] = true;
             }
-            changeFlags[key] = true;
         },
         /**
          * Manually un-registers a change with Safetynet.
          * As with automatically raised/cleared changes, if this is the last change to clear,
          * the warning prompt will no longer be set to display on next page navigation.
-         * @param {String} key A key is required since changes are tracked per-control.
+         * @param {String} key A key is required since changes are tracked per-control.  
+         * Key can be literal string to associate change with, or a jQuery object to traverse and associate
+         * changes with each matched element
          */
         clearChange: function(key) {
             if(key === undefined || isNullOrEmpty(key)) {
                 throw("key is required when clearing a jQuery.safetynet change");
+            } else if(key instanceof $) {
+                key.each(function(){
+                    delete changeFlags[fieldIdentifierFor($(this))]
+                });
+            } else {
+                delete changeFlags[key];                
             }
-            delete changeFlags[key];
         },
         /**
          * Manually un-registers all raised changes.
@@ -206,7 +220,7 @@
         hasChanges: function() {
             return countProperties(changeFlags) > 0;
         },
-        version: '0.9.1',
+        version: '0.9.2',
         defaults: {
             // The message to show the user when navigating away from a non-submitted form
             message: 'Your unsaved changes will be lost.',

@@ -95,14 +95,25 @@ Only one activation of jQuery.safetynet is allowed per page.  Subsequent attempt
 ### Functions
 
 * **jQuery.safetynet.raiseChange(key):**  Manually registers a change with the plugin, so that a warning is prompted when the user navigates away. This can be useful for custom widgets like drag-and-drop to register their changed states.  
-**key:** *a key is required since changes are tracked per-control in order to be able to cancel changes per-control.*
+**key:** *a key is required since changes are tracked per-control in order to be able to cancel changes per-control. Key can be literal string to associate change with, or a jQuery object to traverse and associate changes with each matched element*
 
+        // key as literal string
         $.safetynet.raiseChange('item-dragged-5');
 
+        // key as jQuery. (raises change on all text inputs)        
+        $.safetynet.raiseChange($('input[type="text"]'));  
+
 * **jQuery.safetynet.clearChange(key):**  Manually un-registers a change with the plugin.  As with automatically raised/cleared changes, if this is the last change to clear, the warning prompt will no longer be set to display on next page navigation.  
-**key:** *A key is required since changes are tracked per-control*
+**key:** *A key is required since changes are tracked per-control.  Key can be literal string to associate change with, or a jQuery object to traverse and associate changes with each matched element.*
     
-        $.safetynet.clearChange('item-dragged-5');
+        // key as literal string
+        $.safetynet.clearChange('item-dragged-5');  
+        
+        // key as jQuery. (clears any changes from text inputs)
+        // especially useful before removing fields from the DOM
+        // as those fields may have previously raised changes with 
+        // safetynet, and once they're gone, can not be cleared
+        $.safetynet.clearChange($('input[type="text"]'));  
 
 * **jQuery.safetynet.clearAllChanges()**:  Manually un-registers all raised changes.  Warning prompt will not display on next page navigation.
 
@@ -140,6 +151,7 @@ The following build tasks are available:
 Changelog
 ---------
 
+* 0.9.2 - jQuery.safetynet.clearChange and jQuery.safetynet.raiseChange now overloaded to accept both explicit keys and jQuery objects
 * 0.9.1 - Added support for new 'live' option in conjunction with new jQuery 1.4 support
 * 0.9.0 - Initial Release
 

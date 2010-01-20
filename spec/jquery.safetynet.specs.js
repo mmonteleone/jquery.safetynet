@@ -104,15 +104,41 @@ QUnit.specify("jQuery.safetynet", function() {
             });
 
             describe("raiseChange()", function(){
-                it("should throw exception if not provided a key", function(){
-                    assert(function(){
-                        $.safetynet.raiseChange();
-                    }).throwsException("key is required when raising a jQuery.safetynet change");
+                describe("when key is string literal", function(){
+                    var key = "a";
+                    it("should throw exception if not provided a key", function(){
+                        assert(function(){
+                            $.safetynet.raiseChange();
+                        }).throwsException("key is required when raising a jQuery.safetynet change");
+                    });
+                    it("should add a change so that hasChanges should result in true", function(){
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $.safetynet.raiseChange(key);
+                        assert($.safetynet.hasChanges()).isTrue();
+                    });
                 });
-                it("should add a change so that hasChanges should result in true", function(){
-                    assert($.safetynet.hasChanges()).isFalse();
-                    $.safetynet.raiseChange("a");
-                    assert($.safetynet.hasChanges()).isTrue();
+                describe("when key is JQuery object", function(){
+                    var sel1;
+                    before(function(){
+                        FormBuilder.addTextInput("t1","t1");
+                        FormBuilder.addTextInput("t2","t2");
+                        FormBuilder.addTextInput("t3","t3");
+                        
+                        sel1 = $('input[type="text"]');
+                    });
+                    after(function(){
+                        FormBuilder.clear();                        
+                    });
+                    it("should throw exception if not provided a key", function(){
+                        assert(function(){
+                            $.safetynet.raiseChange();
+                        }).throwsException("key is required when raising a jQuery.safetynet change");
+                    });
+                    it("should add a change so that hasChanges should result in true", function(){
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $.safetynet.raiseChange(sel1);
+                        assert($.safetynet.hasChanges()).isTrue();
+                    });                    
                 });
             });
 
@@ -122,22 +148,62 @@ QUnit.specify("jQuery.safetynet", function() {
                         $.safetynet.clearChange();
                     }).throwsException("key is required when clearing a jQuery.safetynet change");
                 });
-                it("should remove change so that hasChanges returns true when was only change raised", function(){
-                    assert($.safetynet.hasChanges()).isFalse();
-                    $.safetynet.raiseChange("a");
-                    $.safetynet.raiseChange("b");
-                    assert($.safetynet.hasChanges()).isTrue();
-                    $.safetynet.clearChange("a");
-                    assert($.safetynet.hasChanges()).isTrue();
+                describe("when key is string literal", function(){
+                    var keyA = "a";
+                    var keyB = "b";
+                    it("should remove change so that hasChanges returns true when was only change raised", function(){
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $.safetynet.raiseChange(keyA);
+                        $.safetynet.raiseChange(keyB);
+                        assert($.safetynet.hasChanges()).isTrue();
+                        $.safetynet.clearChange(keyA);
+                        assert($.safetynet.hasChanges()).isTrue();
+                    });
+                    it("should remove change so that hasChanges returns false when was not only change raised", function(){
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $.safetynet.raiseChange(keyA);
+                        $.safetynet.raiseChange(keyB);
+                        assert($.safetynet.hasChanges()).isTrue();
+                        $.safetynet.clearChange(keyA);
+                        $.safetynet.clearChange(keyB);
+                        assert($.safetynet.hasChanges()).isFalse();
+                    });                    
                 });
-                it("should remove change so that hasChanges returns false when was not only change raised", function(){
-                    assert($.safetynet.hasChanges()).isFalse();
-                    $.safetynet.raiseChange("a");
-                    $.safetynet.raiseChange("b");
-                    assert($.safetynet.hasChanges()).isTrue();
-                    $.safetynet.clearChange("a");
-                    $.safetynet.clearChange("b");
-                    assert($.safetynet.hasChanges()).isFalse();
+                describe("when key is jQuery object", function(){
+                    var sel1, sel2;
+                    before(function(){
+                        FormBuilder.addTextInput("t1","t1");
+                        FormBuilder.addTextInput("t2","t2");
+                        FormBuilder.addTextInput("t3","t3");
+                        FormBuilder.addTextArea("ta1","ta1");
+                        FormBuilder.addTextArea("ta2","ta2");
+                        FormBuilder.addTextArea("ta3","ta3");                        
+                        
+                        sel1 = $('input[type="text"]');
+                        sel2 = $('textarea');                                                
+                    });
+                    after(function(){
+                        FormBuilder.clear();                        
+                    });
+                    
+                    it("should remove change so that hasChanges returns true when was only change raised", function(){
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $.safetynet.raiseChange(sel1);
+                        $.safetynet.raiseChange(sel2);
+                        assert($.safetynet.hasChanges()).isTrue();
+                        $.safetynet.clearChange(sel1);
+                        assert($.safetynet.hasChanges()).isTrue();
+                    });
+                    it("should remove change so that hasChanges returns false when was not only change raised", function(){
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $.safetynet.raiseChange(sel1);
+                        $.safetynet.raiseChange(sel2);
+                        assert($.safetynet.hasChanges()).isTrue();
+                        $.safetynet.clearChange(sel1);
+                        $.safetynet.clearChange(sel2);
+                        assert($.safetynet.hasChanges()).isFalse();
+                    });                    
+                    
                 });
             });
 
