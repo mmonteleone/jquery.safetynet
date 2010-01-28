@@ -47,7 +47,7 @@ You can download the [zipped release][8] containing a minified build with exampl
 
 jQuery.safetynet requires [jquery][3] 1.3.2, and [jQuery.netchanger][9] 0.9.1 and can be installed thusly 
 
-    <script type="text/javascript" src="jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.1.min.js"></script>
     <script type="text/javascript" src="jquery.netchanger.min.js"></script>
     <script type="text/javascript" src="jquery.safetynet.min.js"></script>
 
