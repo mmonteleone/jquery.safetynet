@@ -47,11 +47,13 @@ You can download the [zipped release][8] containing a minified build with exampl
 
 jQuery.safetynet requires [jquery][3] 1.3.2, and [jQuery.netchanger][9] 0.9.1 and can be installed thusly 
 
-    <script type="text/javascript" src="jquery-1.4.1.min.js"></script>
+    <script type="text/javascript" src="jquery-1.4.3pre.min.js"></script>
     <script type="text/javascript" src="jquery.netchanger.min.js"></script>
     <script type="text/javascript" src="jquery.safetynet.min.js"></script>
 
 jQuery.safetynet includes a full unit test suite, and has been verified to work against Firefox 3.5, Safari 4, Internet Explorer 6,7,8, Chrome, and Opera 9 and 10.  Please feel free to test its suite against other browsers.
+
+**1.4.2 Warning**: While safetynet supports jQuery 1.4.*, it breaks on a regression in 1.4.2.  jQuery 1.4.3 will resolve this.  The current state of 1.4.3 prerelease is included.
 
 jQuery 1.4 Bonus
 ----------------
