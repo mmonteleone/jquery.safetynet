@@ -357,22 +357,22 @@ QUnit.specify("jQuery.safetynet", function() {
                 var t2 = FormBuilder.addTextInput('t2','v2');
                 // anonymous inputs
                 var t3 = FormBuilder.addTextInput('','v3');
-                //var t4 = FormBuilder.addTextInput('','v4');
+                var t4 = FormBuilder.addTextInput('','v4');
 
                 $(opts.fields).safetynet(opts);
                 assert($.safetynet.hasChanges()).isFalse();
                 t1.trigger('netchange');
                 t2.trigger('netchange');
                 t3.trigger('netchange');
-                //t4.trigger('netchange');
+                t4.trigger('netchange');
                 assert($.safetynet.hasChanges()).isTrue();
                 t1.trigger('revertchange');
                 t2.trigger('revertchange');
-                //assert($.safetynet.hasChanges()).isTrue();
-                //t3.trigger('revertchange');
-                //assert($.safetynet.hasChanges()).isTrue();
-                //t4.trigger('revertchange');
-                //assert($.safetynet.hasChanges()).isFalse();
+                assert($.safetynet.hasChanges()).isTrue();
+                t3.trigger('revertchange');
+                assert($.safetynet.hasChanges()).isTrue();
+                t4.trigger('revertchange');
+                assert($.safetynet.hasChanges()).isFalse();
             });
             it("should return original selection", function(){
                 var selection = $(opts.fields);
