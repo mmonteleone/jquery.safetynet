@@ -39,7 +39,7 @@ Requirements, installation, and notes
 jQuery.safetynet requires:
 
 * [jQuery][3] 1.3.2 or greater
-* [jQuery.netchanger][9] 0.9.1 or greater plugin
+* [jQuery.netchanger][9] 0.9.2 or greater plugin
 
 Both are included with jQuery.safetynet.
 
@@ -151,7 +151,7 @@ The following build tasks are available:
 Changelog
 ---------
 
-* 0.9.3 - Added workaround for the still-outstanding [issue](http://dev.jquery.com/ticket/6166) in jQuery 1.4.2, thereby giving safetynet full jQuery 1.4.2 compatibility
+* 0.9.3 - Added workaround for the still-outstanding [issue](http://dev.jquery.com/ticket/6166) in jQuery 1.4.2, thereby giving safetynet full jQuery 1.4.2 compatibility.  This also now requires upgrading the netchanger plugin to 0.9.2 or greater.
 * 0.9.2 - jQuery.safetynet.clearChange and jQuery.safetynet.raiseChange now overloaded to accept both explicit keys and jQuery objects
 * 0.9.1 - Added support for new 'live' option in conjunction with new jQuery 1.4 support
 * 0.9.0 - Initial Release
