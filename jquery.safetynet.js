@@ -2,7 +2,7 @@
  * jQuery.safetynet
  * A smarter in-browser "unsaved changes" warning
  *
- * version 0.9.2
+ * version 0.9.3
  *
  * http://michaelmonteleone.net/projects/safetynet
  * http://github.com/mmonteleone/jquery.safetynet
@@ -29,7 +29,7 @@
      */
     var isNullOrEmpty = function(obj) {
         return obj === null ||
-            (obj.length !== undefined && obj.length === 0);
+            (typeof obj.length !== "undefined" && obj.length === 0);
     };
 
     /**
@@ -44,20 +44,20 @@
 
         // if field has a name, use that
         var name = sel.attr('name');
-        if(name !== undefined && !isNullOrEmpty(name)) {
+        if(typeof name !== "undefined" && !isNullOrEmpty(name)) {
             return name;
         }
 
         // otherwise, if has an id, use that
         var id = sel.attr('id');
-        if(id !== undefined && !isNullOrEmpty(id)) {
+        if(typeof id !== "undefined" && !isNullOrEmpty(id)) {
             return name;
         }
 
         // finally, if neither, just make up a new unique
         // key for it and store it for later
         var uid = sel.data(idDataKey);
-        if(uid === undefined) {
+        if(typeof uid === "undefined" || uid === null) {
             uid = uniqueIdentifiers++;
             sel.data(idDataKey, uid);
         }
@@ -73,7 +73,7 @@
      */
     var countProperties = function(obj) {
         // helpful modern browsers can alreay do this.
-        if(obj.__count__ !== undefined) {
+        if(typeof obj.__count__ !== "undefined") {
             return obj.__count__;
         } else {
             // and others can't.
@@ -105,7 +105,7 @@
         activated = true;
 
         // throw an exception if netchanger wasn't loadeds
-        if($.fn.netchanger === undefined) {
+        if(typeof $.fn.netchanger === "undefined") {
             throw('jQuery.safetynet requires a missing dependency, jQuery.netchanger.');
         }
 
@@ -161,12 +161,12 @@
          * prompted when the user navigates away.  This can be useful for custom
          * widgets like drag-and-drop to register their changed states.
          * @param {String} key a key is required since changes are tracked per-control
-         *  in order to be able to cancel changes per-control. Key can be literal 
+         *  in order to be able to cancel changes per-control. Key can be literal
          *  string to associate change with, or a jQuery object to traverse and associate
          *  changes with each matched element
          */
         raiseChange: function(key) {
-            if(key === undefined || isNullOrEmpty(key)) {
+            if(typeof key === "undefined" || isNullOrEmpty(key)) {
                 throw("key is required when raising a jQuery.safetynet change");
             } else if(key instanceof $) {
                 key.each(function(){
@@ -180,19 +180,19 @@
          * Manually un-registers a change with Safetynet.
          * As with automatically raised/cleared changes, if this is the last change to clear,
          * the warning prompt will no longer be set to display on next page navigation.
-         * @param {String} key A key is required since changes are tracked per-control.  
+         * @param {String} key A key is required since changes are tracked per-control.
          * Key can be literal string to associate change with, or a jQuery object to traverse and associate
          * changes with each matched element
          */
         clearChange: function(key) {
-            if(key === undefined || isNullOrEmpty(key)) {
+            if(typeof key === "undefined" || isNullOrEmpty(key)) {
                 throw("key is required when clearing a jQuery.safetynet change");
             } else if(key instanceof $) {
                 key.each(function(){
                     delete changeFlags[fieldIdentifierFor($(this))]
                 });
             } else {
-                delete changeFlags[key];                
+                delete changeFlags[key];
             }
         },
         /**

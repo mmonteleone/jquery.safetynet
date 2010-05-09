@@ -1,8 +1,8 @@
 QUnit.specify.globalApi = true;
 
-QUnit.specify("jQuery.safetynet", function() {           
+QUnit.specify("jQuery.safetynet", function() {
     var specification = function() {
-        // setup some helpers        
+        // setup some helpers
 
         // capture local references to current jquery objects
         // since the globals may get out of sync in the async
@@ -11,7 +11,7 @@ QUnit.specify("jQuery.safetynet", function() {
             jQuery = window.jQuery;
         var is14OrGreater = Number($.fn.jquery.split('.').slice(0,2).join('.')) >= 1.4;
         var binderMethod = is14OrGreater ? 'live' : 'bind';
-            
+
         // shortcut for building up and breaking down stub forms
         var FormBuilder = {
             clear: function(){
@@ -74,7 +74,7 @@ QUnit.specify("jQuery.safetynet", function() {
                     var passedOptions;
                     var selection;
                     $.fn.safetynet = function(opts) {
-                        passedOptions = opts;                                        
+                        passedOptions = opts;
                         selection = this;
                     };
                     var someOpts = {a:1,b:2};
@@ -83,10 +83,10 @@ QUnit.specify("jQuery.safetynet", function() {
                     assert(selection.size()).equals(2);
                 } finally {
                     $.fn.safetynet = originalSafetynet;
-                }   
+                }
             });
 
-            describe("defaults", function(){            
+            describe("defaults", function(){
                 it("should have a default message option of 'Your unsaved changes will be lost.'", function(){
                     assert($.safetynet.defaults.message).equals('Your unsaved changes will be lost.');
                 });
@@ -100,9 +100,9 @@ QUnit.specify("jQuery.safetynet", function() {
                     if(is14OrGreater) {
                         assert($.safetynet.defaults.live).isTrue("should be true");
                     } else {
-                        assert($.safetynet.defaults.live).isFalse("should be false");                        
+                        assert($.safetynet.defaults.live).isFalse("should be false");
                     }
-                });                
+                });
             });
 
             describe("raiseChange()", function(){
@@ -125,11 +125,11 @@ QUnit.specify("jQuery.safetynet", function() {
                         FormBuilder.addTextInput("t1","t1");
                         FormBuilder.addTextInput("t2","t2");
                         FormBuilder.addTextInput("t3","t3");
-                        
+
                         sel1 = $('input[type="text"]');
                     });
                     after(function(){
-                        FormBuilder.clear();                        
+                        FormBuilder.clear();
                     });
                     it("should throw exception if not provided a key", function(){
                         assert(function(){
@@ -140,7 +140,7 @@ QUnit.specify("jQuery.safetynet", function() {
                         assert($.safetynet.hasChanges()).isFalse();
                         $.safetynet.raiseChange(sel1);
                         assert($.safetynet.hasChanges()).isTrue();
-                    });                    
+                    });
                 });
             });
 
@@ -169,7 +169,7 @@ QUnit.specify("jQuery.safetynet", function() {
                         $.safetynet.clearChange(keyA);
                         $.safetynet.clearChange(keyB);
                         assert($.safetynet.hasChanges()).isFalse();
-                    });                    
+                    });
                 });
                 describe("when key is jQuery object", function(){
                     var sel1, sel2;
@@ -179,15 +179,15 @@ QUnit.specify("jQuery.safetynet", function() {
                         FormBuilder.addTextInput("t3","t3");
                         FormBuilder.addTextArea("ta1","ta1");
                         FormBuilder.addTextArea("ta2","ta2");
-                        FormBuilder.addTextArea("ta3","ta3");                        
-                        
+                        FormBuilder.addTextArea("ta3","ta3");
+
                         sel1 = $('input[type="text"]');
-                        sel2 = $('textarea');                                                
+                        sel2 = $('textarea');
                     });
                     after(function(){
-                        FormBuilder.clear();                        
+                        FormBuilder.clear();
                     });
-                    
+
                     it("should remove change so that hasChanges returns true when was only change raised", function(){
                         assert($.safetynet.hasChanges()).isFalse();
                         $.safetynet.raiseChange(sel1);
@@ -204,8 +204,8 @@ QUnit.specify("jQuery.safetynet", function() {
                         $.safetynet.clearChange(sel1);
                         $.safetynet.clearChange(sel2);
                         assert($.safetynet.hasChanges()).isFalse();
-                    });                    
-                    
+                    });
+
                 });
             });
 
@@ -269,7 +269,7 @@ QUnit.specify("jQuery.safetynet", function() {
                 FormBuilder.addTextInput('t1','v1');
                 FormBuilder.addTextInput('t2','v2');
                 opts = {
-                    message: 'Your unsaved changes will be lost.',            
+                    message: 'Your unsaved changes will be lost.',
                     fields: 'input.test,select.test,textarea.test,fileupload.test',
                     form: 'form',
                     netChangerEvents: 'change,keyup,paste',
@@ -298,7 +298,7 @@ QUnit.specify("jQuery.safetynet", function() {
                     $.fn.netchanger = originalNetchanger;
                 }
             });
-            
+
             it("should throw an exception when specifying live when jq version doesn't support (<1.4 only)", function(){
                 if(is14OrGreater) {
                     try{
@@ -312,7 +312,7 @@ QUnit.specify("jQuery.safetynet", function() {
                     }).throwsException('Use of the live option requires jQuery 1.4 or greater');
                 }
             });
-            
+
             it("should activate netchanger on selection, using netChangerEvents option and live option", function(){
                 var originalNetchanger = $.fn.netchanger;
                 try {
@@ -333,7 +333,7 @@ QUnit.specify("jQuery.safetynet", function() {
             });
             it("should only allow one activation per page", function(){
                 $(opts.fields).safetynet(opts);
-                assert(function(){                
+                assert(function(){
                     $(opts.fields).safetynet(opts);
                 }).throwsException('Only one activation of jQuery.safetynet is allowed per page');
             });
@@ -378,7 +378,7 @@ QUnit.specify("jQuery.safetynet", function() {
                 var selection = $(opts.fields);
                 assert($(selection).safetynet(opts).fields).isSameAs(selection.fields);
             });
-            it("should set a function to window.onbeforeload", function(){            
+            it("should set a function to window.onbeforeload", function(){
                 assert(window.onbeforeunload).isNull();
                 $(opts.fields).safetynet(opts);
                 assert(window.onbeforeunload).isNotNull();
@@ -467,7 +467,7 @@ QUnit.specify("jQuery.safetynet", function() {
             it("should bind submit on form to supressed(true)", function(){
                 var b1 = FormBuilder.addSubmitButton('submittor','go!');
                 $(opts.fields).safetynet(opts);
-                // mock onbeforeunload since we don't care about its call for this, 
+                // mock onbeforeunload since we don't care about its call for this,
                 // and its call will interfere with our check
                 window.onbeforeunload = function() { };
                 assert($.safetynet.suppressed()).isFalse()
@@ -477,12 +477,12 @@ QUnit.specify("jQuery.safetynet", function() {
                     .submit();
                 assert($.safetynet.suppressed()).isTrue()
             });
-        });        
+        });
     };
-    
+
 
     /**
-     * naive replication of $.each since 
+     * naive replication of $.each since
      * jquery is not defined at this point
      */
     var each = function(items, fn) {
@@ -491,19 +491,19 @@ QUnit.specify("jQuery.safetynet", function() {
             fn(item);
         };
     };
-    
+
     /**
      * run entire test suite against multiple loaded versions
      * of jquery.
-     * 
+     *
      * Assumes they have each been loaded and set to notConflict(true)
      * aliased as jq14, jq13, etc.
      */
-    each(["1.3.2","1.4.1","1.4.3"], function(version) {
+    each(["1.3.2","1.4.1","1.4.2"], function(version) {
         describe("in jQ " + version, function(){
             $ = jQuery = window['jq_' + version.replace(/\./g,'_')];
-            specification();                    
-        });        
-    });    
+            specification();
+        });
+    });
 });
 
