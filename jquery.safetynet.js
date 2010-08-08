@@ -2,7 +2,7 @@
  * jQuery.safetynet
  * A smarter in-browser "unsaved changes" warning
  *
- * version 0.9.3
+ * version 0.9.4
  *
  * http://michaelmonteleone.net/projects/safetynet
  * http://github.com/mmonteleone/jquery.safetynet
@@ -51,7 +51,7 @@
         // otherwise, if has an id, use that
         var id = sel.attr('id');
         if(typeof id !== "undefined" && !isNullOrEmpty(id)) {
-            return name;
+            return id;
         }
 
         // finally, if neither, just make up a new unique
@@ -220,7 +220,7 @@
         hasChanges: function() {
             return countProperties(changeFlags) > 0;
         },
-        version: '0.9.2',
+        version: '0.9.4',
         defaults: {
             // The message to show the user when navigating away from a non-submitted form
             message: 'Your unsaved changes will be lost.',

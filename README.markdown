@@ -151,6 +151,7 @@ The following build tasks are available:
 Changelog
 ---------
 
+* 0.9.4 - Fixed issue with non-named, but id'd, inputs not being properly distinguished http://github.com/mmonteleone/jquery.safetynet/issues/#issue/2 
 * 0.9.3 - Added workaround for the still-outstanding [issue](http://dev.jquery.com/ticket/6166) in jQuery 1.4.2, thereby giving safetynet full jQuery 1.4.2 compatibility.  This also now requires upgrading the netchanger plugin to 0.9.2 or greater.
 * 0.9.2 - jQuery.safetynet.clearChange and jQuery.safetynet.raiseChange now overloaded to accept both explicit keys and jQuery objects
 * 0.9.1 - Added support for new 'live' option in conjunction with new jQuery 1.4 support

@@ -19,8 +19,24 @@ QUnit.specify("jQuery.safetynet", function() {
                 $('form').die('submit');
                 $('form').unbind('submit');
             },
-            addTextInput: function(name, value){
-                var input = $('<input class="test" type="text" id="' + name + '" name="' + name + '" value="' + value + '" />');
+            addTextInput: function(name, value, id){
+                var attributes = "",
+                    hasName = typeof(name) !== 'undefined' && name !== '',
+                    hasId = typeof(id) !== 'undefined' && id !== '';
+                // small hack for backwards compat of tests
+                // if only a name was passed, use for both id and name.
+                // if id was passed, use explicitly for id.  and use name explicitly for name
+                if(hasName && !hasId) {
+                    attributes = 'id="' + name + '" name="' + name + '" ';
+                } else {
+                    if(hasId) {
+                        attributes += 'id="' + id + '" ';
+                    }
+                    if(hasName) {
+                        attributes += 'name="' + name + '" ';                        
+                    }
+                }
+                var input = $('<input class="test" type="text" ' + attributes + ' value="' + value + '" />');
                 $('div#testbed form').append(input);
                 return input;
             },
@@ -373,6 +389,29 @@ QUnit.specify("jQuery.safetynet", function() {
                 assert($.safetynet.hasChanges()).isTrue();
                 t4.trigger('revertchange');
                 assert($.safetynet.hasChanges()).isFalse();
+            });
+            it("should be able to differentiate between non-named, but id'd separate inputs when raising/clearing changes", function(){
+              // identified ones
+              var t1 = FormBuilder.addTextInput('t1','v1');
+              var t2 = FormBuilder.addTextInput('t2','v2');
+              // anonymous inputs
+              var t3 = FormBuilder.addTextInput('','v3','id3');
+              var t4 = FormBuilder.addTextInput('','v4','id4');
+              
+              $(opts.fields).safetynet(opts);
+              assert($.safetynet.hasChanges()).isFalse();
+              t1.trigger('netchange');
+              t2.trigger('netchange');
+              t3.trigger('netchange');
+              t4.trigger('netchange');
+              assert($.safetynet.hasChanges()).isTrue();
+              t1.trigger('revertchange');
+              t2.trigger('revertchange');
+              assert($.safetynet.hasChanges()).isTrue();
+              t3.trigger('revertchange');
+              assert($.safetynet.hasChanges()).isTrue();
+              t4.trigger('revertchange');
+              assert($.safetynet.hasChanges()).isFalse();              
             });
             it("should return original selection", function(){
                 var selection = $(opts.fields);
