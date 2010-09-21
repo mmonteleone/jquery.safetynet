@@ -56,9 +56,11 @@ jQuery.safetynet includes a full unit test suite, and has been verified to work 
 jQuery 1.4 Bonus
 ----------------
 
-Safetynet works great with jQuery 1.3, but it's even better with 1.4.  When used with jQuery 1.4, jQuery.safetynet automatically assumes monitoring the document and its fields via netchanger with `.live()` instead of `.bind()`, allowing for any newly added DOM elements to also be protected by safetynet.
+Safetynet works great with jQuery 1.3, but it's even better with 1.4.  When used with jQuery 1.4, jQuery.safetynet automatically assumes monitoring the document and its fields via netchanger with `.live()` instead of `.bind()`, allowing for any newly added DOM elements to also be protected by safetynet.  
 
 This behavior can be overridden by specifying the 'live' option, and is only allowed with jQuery 1.4.
+
+Also when used with jQuery 1.4+, jQuery.safetynet, takes into account that changed inputs could be possibly deleted before a user attempts to navigate away from the page, and doesn't take those inputs' changes into acccount.
 
 Complete API
 ------------
