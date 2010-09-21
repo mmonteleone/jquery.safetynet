@@ -258,6 +258,40 @@ QUnit.specify("jQuery.safetynet", function() {
                     $.safetynet.clearChange("b");
                     assert($.safetynet.hasChanges()).isFalse();
                 });
+                
+                if(is14OrGreater) {
+                    it("should return false when changes raised, but changed inputs removed", function(){
+                        // setup some inputs
+                        FormBuilder.addTextInput('t1','v1');
+                        FormBuilder.addTextInput('t2','v2');
+                        opts = {
+                            message: 'Your unsaved changes will be lost.',
+                            fields: 'input.test,select.test,textarea.test,fileupload.test',
+                            form: 'form',
+                            netChangerEvents: 'change,keyup,paste',
+                            live: is14OrGreater
+                        };
+
+                        $(opts.fields).safetynet(opts);
+                        assert($.safetynet.hasChanges()).isFalse();
+                        $('input[name="t1"]').trigger('netchange');
+                        assert($.safetynet.hasChanges()).isTrue();
+                    
+                        // now clear the inputs
+                        FormBuilder.clear();
+                    
+                        // now assert that the previously recorded changes are gone
+                        assert($.safetynet.hasChanges()).isFalse();
+
+                        // reset stuff
+                        $.safetynet.clearAllChanges();
+                        $.safetynet.suppressed(false);
+                        window.onbeforeunload = null;
+                        $('input[type="submit"]').die('click');
+                        $('input[type="submit"]').unbind('click');                    
+                    });  
+                }              
+                
             });
 
             describe("suppressed()", function(){
@@ -391,27 +425,27 @@ QUnit.specify("jQuery.safetynet", function() {
                 assert($.safetynet.hasChanges()).isFalse();
             });
             it("should be able to differentiate between non-named, but id'd separate inputs when raising/clearing changes", function(){
-              // identified ones
-              var t1 = FormBuilder.addTextInput('t1','v1');
-              var t2 = FormBuilder.addTextInput('t2','v2');
-              // anonymous inputs
-              var t3 = FormBuilder.addTextInput('','v3','id3');
-              var t4 = FormBuilder.addTextInput('','v4','id4');
-              
-              $(opts.fields).safetynet(opts);
-              assert($.safetynet.hasChanges()).isFalse();
-              t1.trigger('netchange');
-              t2.trigger('netchange');
-              t3.trigger('netchange');
-              t4.trigger('netchange');
-              assert($.safetynet.hasChanges()).isTrue();
-              t1.trigger('revertchange');
-              t2.trigger('revertchange');
-              assert($.safetynet.hasChanges()).isTrue();
-              t3.trigger('revertchange');
-              assert($.safetynet.hasChanges()).isTrue();
-              t4.trigger('revertchange');
-              assert($.safetynet.hasChanges()).isFalse();              
+                // identified ones
+                var t1 = FormBuilder.addTextInput('t1','v1');
+                var t2 = FormBuilder.addTextInput('t2','v2');
+                // anonymous inputs
+                var t3 = FormBuilder.addTextInput('','v3','id3');
+                var t4 = FormBuilder.addTextInput('','v4','id4');
+
+                $(opts.fields).safetynet(opts);
+                assert($.safetynet.hasChanges()).isFalse();
+                t1.trigger('netchange');
+                t2.trigger('netchange');
+                t3.trigger('netchange');
+                t4.trigger('netchange');
+                assert($.safetynet.hasChanges()).isTrue();
+                t1.trigger('revertchange');
+                t2.trigger('revertchange');
+                assert($.safetynet.hasChanges()).isTrue();
+                t3.trigger('revertchange');
+                assert($.safetynet.hasChanges()).isTrue();
+                t4.trigger('revertchange');
+                assert($.safetynet.hasChanges()).isFalse();              
             });
             it("should return original selection", function(){
                 var selection = $(opts.fields);

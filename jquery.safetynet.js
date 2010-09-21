@@ -117,8 +117,8 @@
         // set up selected inputs to raise netchanger events
         this.netchanger({events: events, live: settings.live})
             // register an input's change on 'netchange'
-            [binder]('netchange', function(){
-                $.safetynet.raiseChange(fieldIdentifierFor(this));
+            [binder]('netchange', function(e){
+                $.safetynet.raiseChange(fieldIdentifierFor(this), e.target);
                 })
             // clear an input's change on 'revertchange's
             [binder]('revertchange', function(){
@@ -164,8 +164,9 @@
          *  in order to be able to cancel changes per-control. Key can be literal
          *  string to associate change with, or a jQuery object to traverse and associate
          *  changes with each matched element
+         * @param {Object} value optional value to assign to the key being raised
          */
-        raiseChange: function(key) {
+        raiseChange: function(key, value) {
             if(typeof key === "undefined" || isNullOrEmpty(key)) {
                 throw("key is required when raising a jQuery.safetynet change");
             } else if(key instanceof $) {
@@ -173,7 +174,7 @@
                     changeFlags[fieldIdentifierFor($(this))] = true;
                 });
             } else {
-                changeFlags[key] = true;
+                changeFlags[key] = value || true;
             }
         },
         /**
@@ -218,9 +219,24 @@
          * Returns whether there are currently-registered changes.
          */
         hasChanges: function() {
-            return countProperties(changeFlags) > 0;
+            // earlier versions of jQuery did not support 'contain'
+            if('contains' in $) {
+                // when 'contain' does exist, use it to help verify
+                // that not only are changes raised, but if the changes
+                // are related to specific inputs, that the inputs themselves still
+                // exist
+                var applicableChanges = {};
+                $.each(changeFlags, function(key, value) {
+                    if(typeof value === "boolean" || $.contains(document.body, value)) {
+                        applicableChanges[key] = value;
+                    }
+                });
+                return countProperties(applicableChanges) > 0;
+            } else {
+                return countProperties(changeFlags) > 0;                
+            }
         },
-        version: '0.9.4',
+        version: '0.9.5',
         defaults: {
             // The message to show the user when navigating away from a non-submitted form
             message: 'Your unsaved changes will be lost.',
