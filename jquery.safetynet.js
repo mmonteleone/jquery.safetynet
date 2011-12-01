@@ -127,15 +127,21 @@
 
         // hook onto the onbeforeunload
         // this is a strange pseudo-event that can't be jQuery.fn.bind()'ed to
-        window.onbeforeunload = function() {
+        window.onbeforeunload = function () {
             // when suppressed, don't do anything but clear the suppression
-            if($.safetynet.suppressed()) {
+            if ($.safetynet.suppressed()) {
                 $.safetynet.suppressed(false);
-                return undefined;
+                //return true;
             }
-            // show the popup only if there's changes
-            // returning null from an onbeforeunload is the (strange) way of making it do nothing
-            return $.safetynet.hasChanges() ? settings.message : undefined;
+            else if ($.safetynet.hasChanges()) {
+                // show the popup only if there's changes
+                
+                //Handle IE's double popup bug by suppressing and unsuppressing.
+                $.safetynet.suppressed(true);
+                window.setTimeout("$.safetynet.suppressed(false)", 500);
+                return settings.message;
+            }
+        
         };
         // set form submissions to suppress warnings
         $(settings.form)[binder]('submit', function(){ $.safetynet.suppressed(true); });
